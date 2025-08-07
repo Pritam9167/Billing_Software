@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Invoice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #2f3542;
+            color: #fff;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dcdde1;
+            padding: 12px 15px;
+            text-decoration: none;
+            margin-bottom: 5px;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover {
+            background-color: #57606f;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 15px 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+            color: #2f3542;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #2f3542;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .add-remove-buttons {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            background-color: #f1f2f6;
+            color: #555;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+	<div class="sidebar">
+		
+		<div style="text-align:center; margin-bottom:20px;">
+		        <img th:src="@{/images/logo.png}" alt="BillPro Logo" 
+		             style="background:#fff;width:80px; height:80px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.3);" />
+		  
+			</div>
+		
+	       <h3>Billing System</h3>
+	       <a href="/dashboard">📊 Dashboard</a>
+		<a href="/purchases">📥 Purchases</a>
+	       <a href="/customers">👥 Customers</a>
+		<a href="/suppliers">📥 Suppliers</a>
+	       <a href="/products">📦 Products</a>
+	       <a href="/invoices">🧾 Invoices</a>
+	       <a href="/expenses/list">💸 Expenses</a>
+		   <a href="/stock/low">📦 Low Stock Products</a>
+		   	   <a href="/admin/config/stock-threshold">📦 Stock Alert Setting</a>
+	       <a href="/reports">📈 Reports</a>
+		   </div>
+
+<div class="main-content">
+    <div class="navbar">
+        <h1>🧾 Create Invoice</h1>
+        <strong>XYZ Enterprises</strong>
+    </div>
+
+    <div class="form-container">
+        <form th:action="@{/invoices/save}" th:object="${invoice}" method="post">
+
+            <label>Customer Name</label>
+            <input type="text" th:field="*{customerName}" required>
+
+            <label>Invoice Date</label>
+            <input type="date" th:field="*{date}" required>
+
+            <hr>
+            <h3>Invoice Items</h3>
+            <div id="item-container">
+                <div class="row item-row">
+                    <div class="col">
+                        <label>Product</label>
+                        <select name="items[0].product.id" required>
+                            <option th:each="product : ${productList}"
+                                    th:value="${product.id}"
+                                    th:text="${product.name}">Product</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label>Qty</label>
+                        <input type="number" name="items[0].quantity" required>
+                    </div>
+                    <div class="col">
+                        <label>Price</label>
+                        <input type="number" name="items[0].price" required>
+                    </div>
+                    <div class="add-remove-buttons">
+                        <button type="button" class="btn btn-danger remove-item">Remove</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="addItem()">+ Add Item</button>
+
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn btn-primary">💾 Save Invoice</button>
+            </div>
+        </form>
+    </div>
+
+	<div class="footer">
+	           &copy; 2025 PRITAM Enterprises | Nagpur | xyz@gmail.com | +91-9673728056
+	       </div>
+	   </div>
+
+<script th:inline="javascript">
+    const productList = /*[[${productList}]]*/ [];
+</script>
+
+<script>
+    let itemIndex = 1;
+
+    function addItem() {
+        const container = document.getElementById('item-container');
+        const itemRow = document.createElement('div');
+        itemRow.classList.add('row', 'item-row');
+
+        let productOptions = '';
+        productList.forEach(product => {
+            productOptions += `<option value="${product.id}">${product.name}</option>`;
+        });
+
+        itemRow.innerHTML = `
+            <div class="col">
+                <label>Product</label>
+                <select name="items[${itemIndex}].product.id" required>${productOptions}</select>
+            </div>
+            <div class="col">
+                <label>Qty</label>
+                <input type="number" name="items[${itemIndex}].quantity" required>
+            </div>
+            <div class="col">
+                <label>Price</label>
+                <input type="number" name="items[${itemIndex}].price" required>
+            </div>
+            <div class="add-remove-buttons">
+                <button type="button" class="btn btn-danger remove-item">Remove</button>
+            </div>
+        `;
+        container.appendChild(itemRow);
+        itemIndex++;
+    }
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('remove-item')) {
+            e.target.closest('.item-row').remove();
+        }
+    });
+</script>
+
+</body>
+</html>

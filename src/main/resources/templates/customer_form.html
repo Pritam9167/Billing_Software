@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Form</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #2f3542;
+            color: #fff;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dcdde1;
+            padding: 12px 15px;
+            text-decoration: none;
+            margin-bottom: 5px;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover {
+            background-color: #57606f;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 15px 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+            color: #2f3542;
+        }
+
+        .container {
+            margin-top: 30px;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            text-align: center;
+            color: #2f3542;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            background-color: #f1f2f6;
+            color: #555;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .footer {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+	<div style="text-align:center; margin-bottom:20px;">
+	        <img th:src="@{/images/logo.png}" alt="BillPro Logo" 
+	             style="background:#fff;width:80px; height:80px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.3);" />
+	  
+		</div>
+	
+       <h3>Billing System</h3>
+       <a href="/dashboard">📊 Dashboard</a>
+	<a href="/purchases">📥 Purchases</a>
+       <a href="/customers">👥 Customers</a>
+	<a href="/suppliers">📥 Suppliers</a>
+       <a href="/products">📦 Products</a>
+       <a href="/invoices">🧾 Invoices</a>
+       <a href="/expenses/list">💸 Expenses</a>
+	   <a href="/stock/low">📦 Low Stock Products</a>
+	   	   <a href="/admin/config/stock-threshold">📦 Stock Alert Setting</a>
+       <a href="/reports">📈 Reports</a>
+      
+   </div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="navbar">
+        <h1 th:text="${customer.id == null} ? 'Add Customer' : 'Edit Customer'">Customer Form</h1>
+        <div><strong>XYZ Enterprises</strong></div>
+    </div>
+
+    <div class="container">
+        <h2 th:text="${customer.id == null} ? 'Add New Customer' : 'Edit Customer Details'">Customer Form</h2>
+        <form th:action="@{/customers/save}" th:object="${customer}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}" required />
+
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" required />
+
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" th:field="*{phone}" required />
+
+            <label for="address">Address</label>
+            <input type="text" id="address" th:field="*{address}" required />
+
+            <button type="submit">💾 Save Customer</button>
+        </form>
+
+        <a class="back-link" href="/customers">← Back to Customer List</a>
+    </div>
+
+	<div class="footer">
+	           &copy; 2025 PRITAM Enterprises | Nagpur | xyz@gmail.com | +91-9673728056
+	       </div>
+	   </div>
+
+</body>
+</html>

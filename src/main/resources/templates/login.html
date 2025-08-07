@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - BillPro</title>
+    <style>
+        /* Reset and base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f8ff;
+            color: #1f2937;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        a {
+            color: #3b82f6; /* blue */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        a:hover,
+        a:focus {
+            color: #2563eb;
+            outline: none;
+        }
+
+        /* Container with spacing top */
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 40px;
+        }
+
+        /* Logo area */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .logo-icon {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgb(59 130 246 / 0.3);
+            width: 56px;
+            height: 56px;
+            vertical-align: middle;
+        }
+        .logo-icon svg {
+            fill: white;
+            width: 24px;
+            height: 24px;
+            display: block;
+            margin: auto;
+        }
+        .logo-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #111827;
+            margin: 0;
+            line-height: 1;
+        }
+        .logo-subtitle {
+            color: #6b7280;
+            font-weight: 400;
+            font-size: 0.875rem;
+            margin-top: 2px;
+        }
+
+        /* Card style */
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem 2rem 2.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        /* Header */
+        .login-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #111827;
+        }
+        .login-subheader {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.75rem 0.75rem 0.75rem 2.75rem;
+            font-size: 1rem;
+            color: #374151;
+            background: #fafafa;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            outline-offset: 2px;
+        }
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #9ca3af;
+            font-weight: 400;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            background: white;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.3);
+        }
+        /* Icons inside inputs */
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            fill: #6b7280;
+            pointer-events: none;
+        }
+        /* Password toggle icon */
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            color: #6b7280;
+            transition: color 0.3s ease;
+        }
+        .toggle-password:hover,
+        .toggle-password:focus {
+            color: #2563eb;
+            outline: none;
+        }
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Button */
+        button[type="submit"] {
+            background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.24s ease;
+            box-shadow: 0 6px 12px -5px rgb(59 130 246 / 0.65);
+            width: 100%;
+            user-select: none;
+        }
+        button[type="submit"]:hover,
+        button[type="submit"]:focus {
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+            box-shadow: 0 8px 15px -6px rgb(37 99 235 / 0.75);
+            outline: none;
+        }
+
+        /* Additional text below form */
+        .register-text {
+            margin-top: 1.25rem;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #6b7280;
+        }
+        .register-text a {
+            font-weight: 600;
+        }
+
+        /* Footer note text */
+        .footer-note {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.75rem;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+
+        /* Logout message */
+        .logout-message {
+            color: #22c55e;
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* System status */
+        .system-status {
+            max-width: 400px;
+            margin: 24px auto 0 auto;
+            border: 1.5px solid #a7f3d0;
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            user-select: none;
+        }
+        .system-status svg {
+            width: 18px;
+            height: 18px;
+            fill: #166534;
+        }
+    </style>
+</head>
+<body>
+<div class="container" role="main" aria-labelledby="loginHeader">
+    
+	<div class="logo-section" aria-label="BillPro logo and tagline">
+	    <img th:src="@{/images/logo.png}" alt="BillPro Logo"
+	         style="width:80px; height:80px; border-radius:12px; margin-bottom:10px; box-shadow:0 4px 12px rgba(0,0,0,0.2);" />
+	    <h1 class="logo-title">BillPro</h1>
+	    <p class="logo-subtitle">Professional Billing</p>
+	</div>
+
+
+    <section class="login-card" aria-label="Login form">
+        <h2 class="login-header" id="loginHeader">Welcome Back</h2>
+        <p class="login-subheader">Sign in to access your billing dashboard</p>
+
+        <form th:action="@{/login}" method="post" novalidate>
+            <div>
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 00-3-3.87"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <input id="username" name="username" type="text" placeholder="Enter your username" required autocomplete="username" />
+                </div>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0110 0v4"></path>
+                    </svg>
+                    <input id="password" name="password" type="password" placeholder="Enter your password" required autocomplete="current-password" aria-describedby="showPasswordBtnDesc"/>
+                    <button type="button" class="toggle-password" aria-label="Show or hide password" aria-pressed="false" id="togglePasswordBtn" tabindex="-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" >
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                    <span id="showPasswordBtnDesc" class="sr-only">Press to toggle password visibility</span>
+                </div>
+            </div>
+            <button type="submit" aria-describedby="submitDesc">Sign In to Dashboard</button>
+            <span id="submitDesc" class="sr-only">Submit login form</span>
+        </form>
+
+        <p class="register-text">
+            Don't have an account? <a th:href="@{/register}">Request Access</a>
+        </p>
+
+        <p class="footer-note" aria-live="polite" aria-atomic="true">
+            Secure &bull; Encrypted &bull; Professional
+        </p>
+
+        <div th:if="${param.logout}" class="logout-message" role="alert">
+            You have been successfully logged out.
+        </div>
+    </section>
+
+    <div class="system-status" aria-live="polite" aria-atomic="true" role="status" tabindex="0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" />
+        </svg>
+        System Status: Online &amp; Secure
+    </div>
+</div>
+
+<script>
+    // Password toggle functionality
+    (function() {
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('togglePasswordBtn');
+        toggleBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            toggleBtn.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+        });
+    })();
+</script>
+
+<!-- Screen reader only class -->
+<style>
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+</style>
+</body>
+</html>
+

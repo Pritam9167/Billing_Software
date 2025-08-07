@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generate Report</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f6fa;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: #2f3542;
+      color: #fff;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+    }
+
+    .sidebar h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #dcdde1;
+      padding: 12px 15px;
+      text-decoration: none;
+      margin-bottom: 5px;
+      border-radius: 6px;
+    }
+
+    .sidebar a:hover {
+      background-color: #57606f;
+      color: #fff;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #fff;
+      padding: 15px 25px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar h1 {
+      font-size: 22px;
+      color: #2f3542;
+    }
+
+    .container {
+      margin-top: 30px;
+      max-width: 95%;
+    }
+
+    .form-section {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    form {
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      background-color: #f1f2f6;
+      color: #555;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+	<div style="text-align:center; margin-bottom:20px;">
+	        <img th:src="@{/images/logo.png}" alt="BillPro Logo" 
+	             style="background:#fff;width:80px; height:80px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.3);" />
+	  
+		</div>
+	
+       <h3>Billing System</h3>
+       <a href="/dashboard">📊 Dashboard</a>
+	<a href="/purchases">📥 Purchases</a>
+       <a href="/customers">👥 Customers</a>
+	<a href="/suppliers">📥 Suppliers</a>
+       <a href="/products">📦 Products</a>
+       <a href="/invoices">🧾 Invoices</a>
+       <a href="/expenses/list">💸 Expenses</a>
+	   <a href="/stock/low">📦 Low Stock Products</a>
+	   	   <a href="/admin/config/stock-threshold">📦 Stock Alert Setting</a>
+       <a href="/reports">📈 Reports</a>
+    
+   </div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1>📈 Generate Reports</h1>
+    <div><strong>XYZ Enterprises</strong></div>
+  </div>
+
+  <!-- Form Section -->
+  <div class="container">
+    <div class="form-section">
+      <h2>Select Report Type</h2>
+
+      <form action="/reports/sales">
+        <label>Sales Report:</label>
+        <select name="type">
+          <option value="daily">Daily</option>
+          <option value="monthly">Monthly</option>
+        </select>
+        <input type="text" name="value" placeholder="YYYY-MM-DD or YYYY-MM" required>
+        <button type="submit">🔍 View Report</button>
+      </form>
+
+      <form action="/reports/product-sales">
+        <label>Product Sales:</label>
+        <input type="text" name="productName" placeholder="Product Name" required>
+        <button type="submit">🔍 View Report</button>
+      </form>
+
+      <form action="/reports/customer-history">
+        <label>Customer History:</label>
+        <input type="text" name="customerName" placeholder="Customer Name" required>
+        <button type="submit">🔍 View Report</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+             &copy; 2025 PRITAM Enterprises | Nagpur | xyz@gmail.com | +91-9673728056
+         </div>
+     </div>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Low Stock Alert</title>
+    <style>
+		
+		
+		html, body {
+		    height: 100%;
+		    margin: 0;
+		    padding: 0;
+		    display: flex;
+		    flex-direction: column;
+		}
+		
+		
+		.content-area {
+		    flex: 1;
+		    padding: 30px;
+		}
+
+	
+		
+
+		.wrapper {
+		    display: flex;
+		    flex: 1;
+		    flex-direction: row;
+		    min-height: 0;
+		}
+			
+		
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+		body {
+		    font-family: 'Segoe UI', sans-serif;
+		    background-color: #f5f6fa;
+		}
+
+        .sidebar {
+            width: 220px;
+            background-color: #2f3542;
+            color: #fff;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dcdde1;
+            padding: 12px 15px;
+            text-decoration: none;
+            margin-bottom: 5px;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover {
+            background-color: #57606f;
+            color: #fff;
+        }
+
+		.main-content {
+		    flex: 1;
+		    display: flex;
+		    flex-direction: column;
+		    margin-left: 220px;
+		    width: calc(100% - 220px);
+		}
+
+        .navbar {
+            background-color: #fff;
+            padding: 15px 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+            color: #2f3542;
+        }
+
+        .container {
+            background-color: #fff;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            color: #2f3542;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f2f6;
+            color: #2f3542;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .btn-danger {
+            background-color: #e84118;
+        }
+
+        .btn-success {
+            background-color: #44bd32;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+		<div style="text-align:center; margin-bottom:20px;">
+		        <img th:src="@{/images/logo.png}" alt="BillPro Logo" 
+		             style="background:#fff;width:80px; height:80px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.3);" />
+		  
+			</div>
+		
+        <h3>Billing System</h3>
+        <a href="/dashboard">📊 Dashboard</a>
+        <a href="/purchases">📥 Purchases</a>
+        <a href="/customers">👥 Customers</a>
+        <a href="/suppliers">📥 Suppliers</a>
+        <a href="/products">📦 Products</a>
+        <a href="/invoices">🧾 Invoices</a>
+        <a href="/expenses/list">💸 Expenses</a>
+		<a href="/stock/low">📦 Low Stock Products</a>
+			   <a href="/admin/config/stock-threshold">📦 Stock Alert Setting</a>
+        <a href="/reports">📈 Reports</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="navbar">
+            <h1>📉 Low Stock Products</h1>
+            <div><strong>XYZ Enterprises</strong></div>
+        </div>
+
+        <div class="content-area">
+            <div class="container">
+                <h2>⚠️ Low Stock Products (Threshold: <span th:text="${threshold}"></span>)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Current Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${lowStockProducts}">
+                            <td th:text="${product.name}"></td>
+                            <td th:text="${product.quantityInStock}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a href="/stock/low/pdf" class="btn btn-danger">⬇ Export PDF</a>
+                <a href="/stock/low/excel" class="btn btn-success">⬇ Export Excel</a>
+            </div>
+        </div>
+
+        <!-- Sticky Footer -->
+        <div class="footer">
+            &copy; 2025 PRITAM Enterprises | Nagpur | xyz@gmail.com | +91-9673728056
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

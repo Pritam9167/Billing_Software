@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Purchase</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Optional: Move styles to external file -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f6fa;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #2f3542;
+            color: #fff;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dcdde1;
+            padding: 12px 15px;
+            text-decoration: none;
+            margin-bottom: 5px;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover {
+            background-color: #57606f;
+            color: #fff;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 15px 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+            color: #2f3542;
+        }
+
+        .container {
+            margin-top: 30px;
+            max-width: 900px;
+        }
+
+        .form-section {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #2f3542;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .card {
+            background-color: #f7f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .card h5 {
+            margin-bottom: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .btn-success,
+        .btn-secondary {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #1e8449;
+        }
+
+        .btn-secondary {
+            background-color: #bdc3c7;
+            color: #2f3542;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #95a5a6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            background-color: #f1f2f6;
+            color: #555;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+	<div style="text-align:center; margin-bottom:20px;">
+	        <img th:src="@{/images/logo.png}" alt="BillPro Logo" 
+	             style="background:#fff;width:80px; height:80px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.3);" />
+	  
+		</div>
+	
+       <h3>Billing System</h3>
+       <a href="/dashboard">📊 Dashboard</a>
+	<a href="/purchases">📥 Purchases</a>
+       <a href="/customers">👥 Customers</a>
+	<a href="/suppliers">📥 Suppliers</a>
+       <a href="/products">📦 Products</a>
+       <a href="/invoices">🧾 Invoices</a>
+       <a href="/expenses/list">💸 Expenses</a>
+	   <a href="/stock/low">📦 Low Stock Products</a>
+	   	   <a href="/admin/config/stock-threshold">📦 Stock Alert Setting</a>
+       <a href="/reports">📈 Reports</a>
+       
+   </div>
+<!-- Main Content -->
+<div class="main-content">
+    <div class="navbar">
+        <h1>📥 Add Purchase</h1>
+        <div><strong>XYZ Enterprises</strong></div>
+    </div>
+
+    <div class="container">
+        <div class="form-section">
+            <form th:action="@{/purchases/save}" th:object="${purchase}" method="post">
+                <div class="form-group">
+                    <label for="supplierName">Supplier Name</label>
+                    <input type="text" th:field="*{supplierName}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="purchaseDate">Purchase Date</label>
+                    <input type="date" th:field="*{purchaseDate}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Mode</label>
+                    <select th:field="*{paymentMode}" required>
+                        <option value="">-- Select Payment Mode --</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Products</label>
+                    <div th:each="product, iter : ${productList}">
+                        <div class="card">
+                            <h5 th:text="${product.name}">Product Name</h5>
+                            <input type="hidden" th:name="'items[' + ${iter.index} + '].product.id'" th:value="${product.id}" />
+
+                            <div class="row">
+                                <div class="col">
+                                    <label>Quantity</label>
+                                    <input type="number" th:name="'items[' + ${iter.index} + '].quantity'" value="0" min="0" required />
+                                </div>
+                                <div class="col">
+                                    <label>Price</label>
+                                    <input type="number" th:name="'items[' + ${iter.index} + '].price'" step="0.01" min="0" value="0.00" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-success">💾 Save Purchase</button>
+                <a href="/purchases" class="btn-secondary">🔙 Back</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+	<div class="footer">
+	           &copy; 2025 PRITAM Enterprises | Nagpur | xyz@gmail.com | +91-9673728056
+	       </div>
+	   </div>
+
+</body>
+</html>
